@@ -45,3 +45,8 @@ function onClickAddNewItem(e){
 
 document.querySelector("#add-car").addEventListener('click', onClickAddNewItem)
 
+///////////////////// Received //////////////////////////////
+ipcRenderer.on('new-item-added', (e, data) => {
+
+    generateRowLine("cars-table", data.item);
+})

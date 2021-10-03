@@ -85,10 +85,9 @@ function createWindow(viewName, dataToSend, width=1400, height=1200){
     });
 
     // and load the home.html of the app
-    win.loadFile(path.join(__dirname,"views","home","home.html"))
+    win.loadFile(path.join(__dirname,"views",viewName, viewName +".html"))
         .then(() => {
                 win.send("init-data", cars);
-
     })
 
     //Only for debugging phases
@@ -120,5 +119,35 @@ ipcMain.on('open-new-item-window', (e,data) =>{
         return;
     }
 
-    newItemWindow = createWindow('new-item',null,1000,500);
-})
+    newItemWindow = createWindow('new-item',null,1000,700);
+
+    ipcMain.handle('new-item',(e,newItem) => {
+        let id = 1;
+
+        // Create an id for the new item
+        if (cars.length > 0){
+            // Select the last element of the array
+            // Then select the id and add 1 to it
+            id = cars[cars.length - 1].id + 1;
+        }
+        newItem.id = id;
+
+        // Push the new item into the selected array
+        cars.push(newItem);
+
+        // Send the array to the home view
+
+        homeWindow.send('new-item-added', {
+            item: [newItem],
+            type: data.type,
+            cars
+        })
+
+        // Send a response
+        return 'Item ajouté avec succès ✔️'
+    })
+    newItemWindow.on('closed', () => {
+        newItemWindow = null;
+        ipcMain.removeHandler('new-item')
+    })
+});

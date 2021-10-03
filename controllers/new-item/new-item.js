@@ -1,4 +1,4 @@
-const { ipcRender } = require('electron');
+const { ipcRenderer } = require('electron');
 
 const newItemForm = document.querySelector("#new-item-form");
 const newItemSubmitBtn = newItemForm.querySelector("#new-item-submit");
@@ -19,3 +19,34 @@ newItemAnneeInput.addEventListener('input', onInputCheckValue);
 newItemPrixInput.addEventListener('input', onInputCheckValue);
 
 ////////////////////////// Check inputs part ///////////////////////////
+function onSubmitNewItemForm(e) {
+    // Stop the normal behavior
+    e.preventDefault();
+
+    const newItem = {
+        marques: newItemMarqueInput.value,
+        model: newItemModelInput.value,
+        year: newItemAnneeInput.value,
+        price: newItemPrixInput.value
+    };
+
+    ipcRenderer
+        .invoke('new-item', newItem)
+        .then(resp => {
+            const msgDiv = document.querySelector('#response-message');
+            msgDiv.innerText = resp;
+            msgDiv.hidden = false;
+
+            // Re-hide the div after 1.5sec to make it tmp
+            setTimeout(() => {
+                msgDiv.innerText = '';
+                msgDiv.hidden = true;
+            }, 1500);
+
+            // Reset the form and hide again the submit btn
+            e.target.reset();
+            newItemSubmitBtn.hidden = true;
+        });
+}
+
+newItemForm.addEventListener("submit", onSubmitNewItemForm)
