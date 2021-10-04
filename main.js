@@ -3,6 +3,7 @@ const path = require("path");
 
 let homeWindow;
 let newItemWindow;
+let editItemWindow;
 
 const cars = [
   {
@@ -152,6 +153,36 @@ ipcMain.on("open-new-item-window", (e, data) => {
     ipcMain.removeHandler("new-item");
   });
 });
+
+ipcMain.on('open-edit-item-window',(e,data)=>{
+  if (editItemWindow){
+    editItemWindow.close();
+  }
+
+  for (let [index,item] of cars.entries()){
+    if (item.id === data.id){
+      editItemWindow = createWindow('edit-item',{item},1000,500);
+      ipcMain.handle('edit-item',(e,data) => {
+
+        // Update
+        cars[index].marques = data.marques;
+        cars[index].model = data.model;
+        cars[index].year = data.year;
+        cars[index].price = data.price;
+
+        homeWindow.send('edited-item',{
+          item: cars[index]
+        })
+
+        return 'Item modifié avec succès ✔️✔️'
+      });
+      break;
+    }
+  }
+  editItemWindow.on('close',()=>{
+    editItemWindow = null;
+  })
+})
 
 ///////////////////////// Delete window listeners /////////////////////////////
 ipcMain.handle('show-confirm-delete-item',(e,data) =>{

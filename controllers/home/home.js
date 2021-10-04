@@ -1,4 +1,7 @@
 const { ipcRenderer } = require("electron");
+let cbEditedItem;
+
+let editedItem;
 
 function generateRowLine(tbodyId, data) {
   const tbody = document.querySelector("#" + tbodyId);
@@ -27,6 +30,28 @@ function generateRowLine(tbodyId, data) {
     const editBtn = document.createElement("button");
     editBtn.innerText = "Modifier";
     editBtn.classList.add("btn", "btn-outline-warning", "mx-2");
+    editBtn.addEventListener('click',()=>{
+
+      ipcRenderer.send('open-edit-item-window',{
+        id: item.id,
+        type: tbodyId.split('-')[0]
+      });
+
+      // Delete the last cb on the "edited-item" listener
+      if (cbEditedItem){
+        ipcRenderer.removeListener('edited-item',cbEditedItem);
+        cbEditedItem = null;
+      }
+
+      ipcRenderer.on('edited-item',(e,data) =>{
+        tdMarque.innerText = data.item.marques;
+        tdModel.innerText = data.item.model;
+        tdYear.innerText = data.item.year;
+        tdPrice.innerText = data.item.price;
+
+      });
+
+    })
 
     const deleteBtn = document.createElement("button");
     deleteBtn.innerText = "Supprimer";
