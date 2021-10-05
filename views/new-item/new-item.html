@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
 
-    <title>Comptabilité Garage</title>
+    <title>Mes voitures</title>
 
     <link
       href="../../node_modules/bootstrap/dist/css/bootstrap.min.css"
@@ -36,24 +36,45 @@
 
           <form id="new-item-form">
             <div class="form-group">
-              <label for="item-label">Intitulé</label>
+              <label for="item-marques">Marque</label>
               <input
                 type="text"
                 class="form-control"
-                id="item-label"
+                id="item-marques"
                 placeholder="Renseignez l'intitulé"
               />
             </div>
 
             <div class="form-group">
-              <label for="item-value">Valeur</label>
+              <label for="item-model">Modèle</label>
               <input
-                type="number"
+                type="text"
                 class="form-control"
-                id="item-value"
+                id="item-model"
                 placeholder="Renseignez la valeur"
               />
             </div>
+
+            <div class="form-group">
+              <label for="item-year">Année</label>
+              <input
+                type="number"
+                class="form-control"
+                id="item-year"
+                placeholder="Renseignez la valeur"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="item-price">Prix</label>
+              <input
+                type="text"
+                class="form-control"
+                id="item-price"
+                placeholder="Renseignez la valeur"
+              />
+            </div>
+
             <div class="row">
               <div class="col-6 mx-auto">
                 <button
