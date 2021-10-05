@@ -1,5 +1,5 @@
 {
-  "name": "filrouge2",
+  "name": "balance-manager",
   "version": "1.0.0",
   "description": "",
   "main": "main.js",
@@ -7,11 +7,12 @@
     "start": "electron .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.15.4",
     "bootstrap": "^5.1.1",
-    "electron": "^15.0.0"
+    "electron": "^15.1.1"
   }
 }
